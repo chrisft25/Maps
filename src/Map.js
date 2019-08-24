@@ -8,7 +8,7 @@ const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoiY2hyaXNmdDI1IiwiYSI6ImNqemxheXBpaTB0bXczY2s2MG5rM3BrZzgifQ.IJuNpj8FMzhcaHNXSeJM8w",
 });
 
-var centro = 0
+var centro = null
 
 class Mapa extends Component {
 
@@ -16,6 +16,7 @@ class Mapa extends Component {
     lat:null,
     long:null,
     counter: 0,
+    center:[]
   }
 
 constructor(props){
@@ -37,11 +38,18 @@ this.interval2 = setInterval(()=>{
     .then((data)=>{
       return data.json()
     }).then((data =>{
+
       this.setState({
         lat:data.data.latitud,
         long:data.data.longitud,
       })
-      centro=centro+1
+
+      
+      // if(this.state.center.length==0){
+      //   this.state.center.push(this.state.long)
+      //   this.state.center.push(this.state.lat)
+      //   console.log(this.state.center)
+      //  }
     }))
     
   }, 1000);
@@ -63,16 +71,20 @@ componentWillUnmount() {
       <div>{this.state.counter}</div>
       {
         (this.state.lat) ? (
-          (centro==1) ? (
-            <Map
-              style="mapbox://styles/mapbox/streets-v9"
-              zoom={[17]}
-              center={[this.state.long,this.state.lat]}
-              containerStyle={{
-                height: "100vh",
-                width: "100vw"
-              }}>
-                
+
+           
+<div>
+  
+          <Map
+            style="mapbox://styles/mapbox/streets-v9"
+            zoom={[17]}
+            center={[this.state.long,this.state.lat]}
+            containerStyle={{
+              height: "100vh",
+              width: "100vw"
+            }}
+            renderChildrenInPortal={true}> 
+                 
                 <Layer
                   type="symbol"
                   id="marker"
@@ -81,25 +93,9 @@ componentWillUnmount() {
                   <Feature coordinates={[this.state.long,this.state.lat]}/>
                 </Layer>
             </Map>
-                    ) : (
-              <Map
-              style="mapbox://styles/mapbox/streets-v9"
-              zoom={[17]}
-              
-              containerStyle={{
-                height: "100vh",
-                width: "100vw"
-              }}>
-                
-                <Layer
-                  type="symbol"
-                  id="marker"
-                  layout={{ "icon-image": "marker-15", "icon-size":3 }}
-                  key={this.state.counter}>
-                  <Feature coordinates={[this.state.long,this.state.lat]}/>
-                </Layer>
-            </Map>
-                    )
+            
+                  </div>
+                    
         ) : 'Cargando data'
      
         
