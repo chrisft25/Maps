@@ -62,9 +62,10 @@ componentWillUnmount() {
 
   return (
     <div className="App">
-      <Map google={this.props.google} zoom={18} initialCenter={{lat:this.state.lat, lng:this.state.long}} center={{lat:this.state.lat, lng:this.state.long}}>
- 
-        <Marker onClick={this.onMarkerClick}
+      {
+        (this.state.counter==1) ? (
+          <Map google={this.props.google} zoom={18} initialCenter={{lat:this.state.lat, lng:this.state.long}} center={{lat:this.state.lat, lng:this.state.long}}>
+             <Marker onClick={this.onMarkerClick}
                 title={'Posición actual'}
                 name={'Posición actual'}
                 position={{lat:this.state.lat, lng:this.state.long}} 
@@ -75,11 +76,31 @@ componentWillUnmount() {
                 }}
                 key={this.state.counter}
                 />
+                </Map>
+        ) : (
+          <Map google={this.props.google} zoom={18} initialCenter={{lat:this.state.lat, lng:this.state.long}}>
+          <Marker onClick={this.onMarkerClick}
+                title={'Posición actual'}
+                name={'Posición actual'}
+                position={{lat:this.state.lat, lng:this.state.long}} 
+                icon={{
+                  url: icono,
+                  anchor: new this.props.google.maps.Point(32,32),
+                  scaledSize: new this.props.google.maps.Size(32,32)
+                }}
+                key={this.state.counter}
+                />
+                </Map>
+        )
+      }
+     
+ 
+       
 
         <InfoWindow onClose={this.onInfoWindowClose}>
            
         </InfoWindow>
-      </Map>
+      
     </div>
   );
 }
