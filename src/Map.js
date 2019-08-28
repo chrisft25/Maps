@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
-import logo from './logo.svg';
-import icono from './img/red-circle.png'
 import './App.css';
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature, Marker } from "react-mapbox-gl";
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoiY2hyaXNmdDI1IiwiYSI6ImNqemxheXBpaTB0bXczY2s2MG5rM3BrZzgifQ.IJuNpj8FMzhcaHNXSeJM8w",
 });
-
-var centro = null
 
 class Mapa extends Component {
 
@@ -23,7 +19,6 @@ constructor(props){
   super(props);
   
 }
-
 
 componentDidMount(){
   console.log(this.state)
@@ -43,18 +38,10 @@ this.interval2 = setInterval(()=>{
         lat:data.data.latitud,
         long:data.data.longitud,
       })
-
-      
-      // if(this.state.center.length==0){
-      //   this.state.center.push(this.state.long)
-      //   this.state.center.push(this.state.lat)
-      //   console.log(this.state.center)
-      //  }
     }))
     
   }, 1000);
   }
-
 
 componentWillUnmount() {
   clearInterval(this.interval);
@@ -62,46 +49,37 @@ componentWillUnmount() {
 }
 
 
-
   render(){
-
 
   return (
     <div className="App">
-      <div>{this.state.counter}</div>
+      {/* <div>{this.state.counter}</div> */}
       {
         (this.state.lat) ? (
-
-           
-<div>
-  
           <Map
             style="mapbox://styles/mapbox/streets-v9"
-            zoom={[17]}
+            zoom={[16]}
             center={[this.state.long,this.state.lat]}
             containerStyle={{
               height: "100vh",
               width: "100vw"
             }}
             renderChildrenInPortal={true}> 
-                 
+            {/* <Marker
+            coordinates={[this.state.long,this.state.lat]}
+            >
+              Hola
+            </Marker> */}
                 <Layer
                   type="symbol"
                   id="marker"
-                  layout={{ "icon-image": "marker-15", "icon-size":3 }}
+                  layout={{ "icon-image": "marker-15", "icon-size":2 }}
                   key={this.state.counter}>
                   <Feature coordinates={[this.state.long,this.state.lat]}/>
                 </Layer>
-            </Map>
-            
-                  </div>
-                    
+            </Map>  
         ) : 'Cargando data'
-     
-        
-        
       }
-      
     </div>
   );
 }
