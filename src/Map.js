@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import './App.css';
-import ReactMapboxGl, { Layer, Feature, Marker } from "react-mapbox-gl";
+import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 
 const Map = ReactMapboxGl({
   accessToken: "pk.eyJ1IjoiY2hyaXNmdDI1IiwiYSI6ImNqemxheXBpaTB0bXczY2s2MG5rM3BrZzgifQ.IJuNpj8FMzhcaHNXSeJM8w",
@@ -21,15 +20,15 @@ constructor(props){
 }
 
 componentDidMount(){
-  console.log(this.state)
-this.interval2 = setInterval(()=>{
-  this.setState({
-    counter: this.state.counter+1
-  })
-},1200);
+
+  this.interval2 = setInterval(()=>{
+    this.setState({
+      counter: this.state.counter+1
+    })
+  },1200);
 
   this.interval = setInterval(() => {
-    fetch('https://lit-reaches-54466.herokuapp.com/coordenadas')
+    fetch('http://67.205.188.226:3000/coordenadas')
     .then((data)=>{
       return data.json()
     }).then((data =>{
@@ -52,24 +51,27 @@ componentWillUnmount() {
   render(){
 
   return (
-    <div className="App">
-      {/* <div>{this.state.counter}</div> */}
+    <div className="App" style={{textAlign:"center"}}>
       {
+        
         (this.state.lat) ? (
+          <div>
+            <h1 style={{position:"relative",zIndex:"2"}}>BASTÓN INTELIGENTE</h1>
           <Map
             style="mapbox://styles/mapbox/streets-v9"
             zoom={[16]}
             center={[this.state.long,this.state.lat]}
             containerStyle={{
-              height: "100vh",
-              width: "100vw"
+              height: "90vh",
+              width: "90vw",
+              position: "absolute",
+              top: "55%",
+              left: "50%",
+              transform: "translate(-50%,-50%)",
+              border: "20px solid red",
+              marginBottom:"10px"
             }}
-            renderChildrenInPortal={true}> 
-            {/* <Marker
-            coordinates={[this.state.long,this.state.lat]}
-            >
-              Hola
-            </Marker> */}
+            renderChildrenInPortal={true}>
                 <Layer
                   type="symbol"
                   id="marker"
@@ -78,6 +80,7 @@ componentWillUnmount() {
                   <Feature coordinates={[this.state.long,this.state.lat]}/>
                 </Layer>
             </Map>  
+                  </div>
         ) : 'Cargando data'
       }
     </div>
